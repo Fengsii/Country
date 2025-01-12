@@ -9,5 +9,7 @@ namespace Country.Models.DB
         public string Location { get; set; }
         public int Pupolation {  get; set; }
         public string Language { get; set; }
+
+        //y
 }
 }
