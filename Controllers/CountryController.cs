@@ -1,4 +1,5 @@
-﻿using Country.Models.DB;
+﻿using Country.Models;
+using Country.Models.DB;
 using Country.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,71 +19,132 @@ namespace Country.Controllers
         }
 
 
-        // GET: api/<ItemsController>
+        // GET: api/<CustomerController>
         [HttpGet]
         public IActionResult Get()
         {
-            var itemList = _countryGlobeService.GetListItems();
-            return Ok(itemList);
-        }
-
-        // GET api/<ItemsController>/5
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var item = _countryGlobeService.GetItemById(id);
-
-            if (item == null)
+            try
             {
-                return NotFound("Data Tidak Ditemukan");
+                var customerList = _countryGlobeService.GetListItems();
+                var response = new GeneralResponse
+                {
+                    StatusCode = "01",
+                    Statusdesc = "Sukses",
+                    Data = customerList
+                };
+                return Ok(response);
             }
-
-            return Ok(item);
+            catch (Exception ex)
+            {
+                var customerList = _countryGlobeService.GetListItems();
+                var response = new GeneralResponse
+                {
+                    StatusCode = "99",
+                    Statusdesc = "Failed | " + ex.Message.ToString(),
+                    Data = null
+                };
+                return BadRequest(response);
+            }
         }
 
-        //POST api/<ItemsController>
+        // GET api/<CustomerController>/5
+        [HttpGet("{id}")]
+        public IActionResult GetCustomerById(int id)
+        {
+            var customer = _countryGlobeService.GetItemById(id);
+            if (customer == null)
+            {
+                return NotFound(); // Mengembalikan status 404 jika pelanggan tidak ditemukan
+            }
+            return Ok(customer); // Mengembalikan data pelanggan
+        }
+
+        // POST api/<CustomerController>
         [HttpPost]
         public IActionResult Post(CountryGloble countryGloble)
         {
             try
             {
-                var dataItem = _countryGlobeService.CreateItems(countryGloble);
-                if (dataItem)
+                var InsertCustomer = _countryGlobeService.CreateItems(countryGloble);
+                if (InsertCustomer)
                 {
-                    return Ok("Insert Item Success");
+                    var responseSuccess = new GeneralResponse
+                    {
+                        StatusCode = "01",
+                        Statusdesc = "Insert Customer Success",
+                        Data = null
+                    };
+
+                    return Ok(responseSuccess);
                 }
 
-                return BadRequest("Insert Item Failed");
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "02",
+                    Statusdesc = "Insert Customer Failed",
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error: {ex.Message}");
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "99",
+                    Statusdesc = "Failed | " + ex.Message.ToString(),
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
             }
 
         }
 
-
-        // PUT api/<ItemsController>/5
-        [HttpPut("{id}")]
+        // PUT api/<CustomerController>/5
+        [HttpPut]
         public IActionResult Put(CountryGloble countryGloble)
         {
             try
             {
-                var dataup = _countryGlobeService.UpdateItems(countryGloble);
-                if (dataup)
+                var dataUpdate = _countryGlobeService.UpdateItems(countryGloble);
+                if (dataUpdate)
                 {
-                    return Ok("Data Berhasil Diupdate");
+                    var responseSuccess = new GeneralResponse
+                    {
+                        StatusCode = "01",
+                        Statusdesc = "Update Customer Success",
+                        Data = null
+                    };
+
+                    return Ok(responseSuccess);
+                    //return Ok("Data Berhasil Diupdate");
                 }
-                return BadRequest("Update data gagal");
+
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "02",
+                    Statusdesc = "Update Customer Failed",
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
+
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message.ToString());
-                throw;
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "99",
+                    Statusdesc = "Failed | " + ex.Message.ToString(),
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
             }
         }
 
-        // DELETE api/<ItemsController>/5
+        // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -91,16 +153,39 @@ namespace Country.Controllers
                 var data = _countryGlobeService.DeleteItems(id);
                 if (data)
                 {
-                    return Ok("Data Berhasil Dihapus");
+                    var responseSuccess = new GeneralResponse
+                    {
+                        StatusCode = "01",
+                        Statusdesc = "Delete Customer Success",
+                        Data = null
+                    };
+
+                    return Ok(responseSuccess);
+                    //return Ok("Data Berhasil Dihapus");
                 }
 
-                return NotFound("Data Tidak Ditemukan");
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "02",
+                    Statusdesc = "Delete Customer Failed",
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
             }
             catch (Exception ex)
             {
-                //return BadRequest(ex.Message.ToString());
-                return BadRequest($"Terjadi Kesalahan : {ex.Message}");
+                var responseFailed = new GeneralResponse
+                {
+                    StatusCode = "99",
+                    Statusdesc = "Failed | " + ex.Message.ToString(),
+                    Data = null
+                };
+
+                return BadRequest(responseFailed);
             }
         }
+
+
     }
 }
