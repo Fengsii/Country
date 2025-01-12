@@ -112,3 +112,4 @@ C:\Users\DELL 7390\Documents\CSharp Lanjutan\Country\obj\Debug\net8.0\refint\Cou
 C:\Users\DELL 7390\Documents\CSharp Lanjutan\Country\obj\Debug\net8.0\Country.pdb
 C:\Users\DELL 7390\Documents\CSharp Lanjutan\Country\obj\Debug\net8.0\Country.genruntimeconfig.cache
 C:\Users\DELL 7390\Documents\CSharp Lanjutan\Country\obj\Debug\net8.0\ref\Country.dll
+C:\Users\DELL 7390\Documents\CSharp Lanjutan\Country\obj\Debug\net8.0\Country.sourcelink.json
