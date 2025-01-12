@@ -6,10 +6,5 @@
         public string Statusdesc { get; set; }
         public object Data { get; set; }
 
-        //haloooo
-
-
-        //uuuvvv
-
     }
 }
